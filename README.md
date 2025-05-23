@@ -1,74 +1,40 @@
 # FEMT - Finite Element Method Toolkit
 
-## 项目简介
+## Introduction
 
-FEMT (Finite Element Method Toolkit) 是一个计算力学基础有限元分析系统，包含前处理、计算和后处理三个主要部分。该项目原本仅支持Intel Fortran编译器，本版本进行了修改，使其同时支持：
+FEMT (Finite Element Method Toolkit) is a computational mechanics finite element analysis system that includes pre-processing, computation, and post-processing components. The original project only supported Intel Fortran compiler. This version has been modified to support:
 
-1. 九节点四边形单元 (RECTANGLE9)
-2. GNU Fortran (gfortran) 编译器
+1. 9-node quadrilateral elements (RECTANGLE9)
+2. GNU Fortran (gfortran) compiler
 
-## 主要特性
+## Project Structure
 
-- 支持多种单元类型：
-  - 三节点三角形单元 (TRIANGLE3)
-  - 六节点三角形单元 (TRIANGLE6)
-  - 四节点四边形单元 (RECTANGLE4)
-  - 八节点四边形单元 (RECTANGLE8)
-  - 九节点四边形单元 (RECTANGLE9) - 新增支持
+- `Source/`: Source code directory (computation program)
+- `pre_process.m`: Pre-processing program (MATLAB)
+- `post_process.m`: Post-processing program (MATLAB)
+- `compile.bat`: gfortran compilation script
 
-- 完整的有限元分析流程：
-  - 前处理：网格生成与边界条件设置
-  - 计算程序：有限元分析求解
-  - 后处理：结果可视化与分析
+## Modifications
 
-- 编译器兼容性：
-  - 支持Intel Fortran编译器
-  - 支持GNU Fortran (gfortran) 编译器
+See `modification.md` for details about the changes made to support 9-node elements and gfortran compilation.
 
-## 项目结构
+## Usage Instructions
 
-- `src/`: 源代码目录
-  - 计算程序 (Fortran)
-  - 前处理程序 (MATLAB)
-  - 后处理程序 (MATLAB)
+1. Pre-processing: Run `pre_process.m` in MATLAB to generate mesh and boundary conditions
+2. Computation: Use `compile.bat` to compile the program, then run the generated executable
+3. Post-processing: Run `post_process.m` in MATLAB to visualize results
 
-## 九节点单元实现
+## Compilation
 
-为支持九节点四边形单元 (RECTANGLE9)，对程序进行了以下主要修改：
-
-1. 计算程序：
-   - 添加了RECTANGLE9元素类型定义
-   - 实现了9节点Lagrangian形状函数及其导数
-   - 修改了积分点初始化、刚度矩阵计算等核心功能
-
-2. 前处理程序：
-   - 添加了9节点单元的网格生成支持
-   - 修改了边界条件应用方式
-
-3. 后处理程序：
-   - 添加了9节点单元的结果可视化支持
-   - 优化了网格信息显示
-
-## 使用说明
-
-1. 前处理：使用MATLAB运行前处理程序生成网格和边界条件
-2. 计算：使用Fortran编译器编译并运行计算程序
-3. 后处理：使用MATLAB运行后处理程序可视化结果
-
-## 编译说明
-
-### 使用gfortran编译
-
-```bash
-gfortran -o femt *.f90
+This project uses GNU Fortran (gfortran) compiler and has been tested with:
+```
+gcc version 6.3.0 (MinGW.org GCC-6.3.0-1)
 ```
 
-### 使用Intel Fortran编译
+To compile, use the provided batch file:
 
 ```bash
-ifort -o femt *.f90
+compile.bat
 ```
 
-## 许可证
-
-[待添加]
+The compiled executable will be located in the `gfortran_build` directory.
