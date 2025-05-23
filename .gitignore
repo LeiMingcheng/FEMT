@@ -1,0 +1,64 @@
+# Calculation files
+*.geo
+*.inp
+*.bnd
+*.ctr
+*.out
+*.log
+*.TMP
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*~
+*.suo
+*.u2d
+*.pdb
+*.htm
+*.manifest
+*__genmod.f90
+
+# Build directories
+/build/
+/bin/
+/x64/
+/Debug/
+/Release/
+
+# Backup files
+*.bak
+*.asv
+
+# Archives
+*.zip

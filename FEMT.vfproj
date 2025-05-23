@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{B2F65E82-BE5E-4400-9EFD-9C021A98654C}">
+	<Platforms>
+		<Platform Name="Win32"/>
+		<Platform Name="x64"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" WarnInterfaces="true" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Debug|x64">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" MultiProcessorCompilation="true" Optimization="optimizeDisabled" GenAlternateCodePaths="codeForAVX" UseProcessorExtensions="codeExclusivelyAVX" OpenMPConditionalCompilation="false" F2003Semantics="true" WarningsAsErrors="true" OpenMPDiagLevel="openMPDiagLevel0" ParallelizerDiagLevel="parallelizerDiagLevel0" DebugParameter="debugParameterAll" WarnDeclarations="true" WarnUnusedVariables="true" WarnIgnoreLOC="true" WarnTruncateSource="true" WarnUncalled="true" WarnInterfaces="true" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebug" UseMkl="mklParallel"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole" StackReserveSize="1000000000" StackCommitSize="1000000000" LargeAddressAware="addrAwareLarge"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|x64">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole" LargeAddressAware="addrAwareLarge"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<Filter Name="Boundary">
+		<File RelativePath=".\Source\Boundary\BOUNDARY_CONDITION.F90"/>
+		<File RelativePath=".\Source\Boundary\BOUNDARY_DISPLACEMENT.F90"/>
+		<File RelativePath=".\Source\Boundary\BOUNDARY_FORCE.F90"/>
+		<File RelativePath=".\Source\Boundary\READ_DISPLACEMENT.F90"/>
+		<File RelativePath=".\Source\Boundary\READ_LINE_FORCE.F90"/>
+		<File RelativePath=".\Source\Boundary\READ_NODAL_FORCE.F90"/></Filter>
+		<Filter Name="Force">
+		<File RelativePath=".\Source\Force\GET_FORCE.F90"/>
+		<File RelativePath=".\Source\Force\LINE_FORCE_PLANE.F90"/></Filter>
+		<Filter Name="Main">
+		<Filter Name="INITIATION">
+		<File RelativePath=".\Source\Main\Initiation\CHECK_DATA.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\INIT_ELE_LIB.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\INIT_INTEGRATION.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\INIT_MECHANICAL.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\INIT_SHAPE.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\INIT_SOLUTION.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\INITIATE.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\LOAD_SHAPE.F90"/>
+		<File RelativePath=".\Source\Main\Initiation\SHAPE_2D.F90"/></Filter>
+		<Filter Name="READ">
+		<File RelativePath=".\Source\Main\Read\READ_ELEMENTS.F90"/>
+		<File RelativePath=".\Source\Main\Read\READ_GEOMETRIES.F90"/>
+		<File RelativePath=".\Source\Main\Read\READ_INSTRUCTION.F90"/>
+		<File RelativePath=".\Source\Main\Read\READ_MATERIALS.F90"/>
+		<File RelativePath=".\Source\Main\Read\READ_XYZ.F90"/></Filter>
+		<File RelativePath=".\Source\Main\CLEAR_INSTRUCTION.F90"/>
+		<File RelativePath=".\Source\Main\FEMT.F90"/>
+		<File RelativePath=".\Source\Main\OUTPUT.F90"/>
+		<File RelativePath=".\Source\Main\SOLVER_MANAGER.F90"/>
+		<File RelativePath=".\Source\Main\SUMMARY.F90"/></Filter>
+		<Filter Name="Mechanics">
+		<Filter Name="STIFFNESS">
+		<File RelativePath=".\Source\Mechanics\Stiffness\MATERIAL_2D.F90"/>
+		<File RelativePath=".\Source\Mechanics\Stiffness\STIFFNESS.F90"/>
+		<File RelativePath=".\Source\Mechanics\Stiffness\STIFFNESS_PLANE.F90"/></Filter>
+		<Filter Name="STRAIN">
+		<File RelativePath=".\Source\Mechanics\Strain\GET_STRAIN.F90"/>
+		<File RelativePath=".\Source\Mechanics\Strain\STRAIN_GAUSS_PLANE.F90"/>
+		<File RelativePath=".\Source\Mechanics\Strain\STRAIN_NODAL_RECTANGLE.F90"/>
+		<File RelativePath=".\Source\Mechanics\Strain\STRAIN_NODAL_TRIANGLE.F90"/></Filter>
+		<Filter Name="STRESS">
+		<File RelativePath=".\Source\Mechanics\Stress\GET_STRESS.F90"/>
+		<File RelativePath=".\Source\Mechanics\Stress\STRESS_GAUSS_PLANE.F90"/>
+		<File RelativePath=".\Source\Mechanics\Stress\STRESS_NODAL_RECTANGLE.F90"/>
+		<File RelativePath=".\Source\Mechanics\Stress\STRESS_NODAL_TRIANGLE.F90"/></Filter></Filter>
+		<Filter Name="Modules">
+		<File RelativePath=".\Source\Modules\BASIC_DATA.F90"/>
+		<File RelativePath=".\Source\Modules\SOLUTION_DATA.F90"/></Filter>
+		<Filter Name="Solver">
+		<File RelativePath=".\Source\Solver\ASSEMBLE_STIFFNESS.F90"/>
+		<File RelativePath=".\Source\Solver\CHOLESCKEY.F90"/>
+		<File RelativePath=".\Source\Solver\INV.f90"/>
+		<File RelativePath=".\Source\Solver\SOLVE.F90"/>
+		<File RelativePath=".\Source\Solver\SOLVER_MECH_STATIC_DIR.F90"/></Filter></Filter></Files>
+	<Globals/></VisualStudioProject>

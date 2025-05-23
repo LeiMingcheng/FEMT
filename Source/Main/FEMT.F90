@@ -1,0 +1,28 @@
+!***************************************************************************************************
+!- PURPORSE:
+!     THIS IS A TUTORIAL FINITE ELEMENT PROGRAM.
+!  
+!- CALL PROCEDURES:
+!  EXTERNAL PROCEDURE: INITIATE, SOLVER_MANAGER, SUMMARY
+!
+!- CALLED BY:
+!  THIS IS THE MAIN SUBROUTINE
+!
+!- PROGAMMED BY:
+!  ZHIHAI XIANG, DEPARTMENT OF ENGINEERING MECHANICS, TSINGHUA UNIVERSITY, NOVEMBER 1, 2015
+!***************************************************************************************************
+
+PROGRAM FEMT
+
+IMPLICIT NONE
+
+!-- INITIATE THE PROGRAM --
+CALL INITIATE
+
+!-- THIS PROGRAM IS DRIVEN BY USERED DEFINED MACROS --
+CALL SOLVER_MANAGER
+
+!-- CLEAR ALL ALLOCATED SPACES AND CALCULATE THE TIME STATISTICS --
+CALL SUMMARY                         
+
+END PROGRAM FEMT

@@ -1,0 +1,104 @@
+!***************************************************************************************************
+!- PURPORSE:
+!     READ DIFFERENT KIND OF DISPLACEMENTS ACCORDING TO GIVEN STRING(CHAR) & STORE IN TO GIVE ARRAY(DISP).
+!  
+!- INPUT ARGUMENTS:
+!  CHAR  : THE TYPE OF DISPLACEMENTS
+!  NUMBER: THE NUMBER OF DISPLACEMENTS
+!
+!- OUTPUT ARGUMENTS:
+!  DISP: STORE THE READ RESULT
+!
+!- CALL PROCEDURES:
+!  MODULE PROCEDURE:   GET_MACRO, REMOVE_FIRSTWORD, ERROR
+!  EXTERNAL PROCEDURE: BOUNDARY_DISPLACEMENT
+!
+!- CALLED BY
+!  BOUNDARY_CONDITION
+!
+!- PROGAMMED BY:
+!  ZHIHAI XIANG, DEPARTMENT OF ENGINEERING MECHANICS, TSINGHUA UNIVERSITY, SEPTEMBER 10, 2007
+!***************************************************************************************************
+
+SUBROUTINE READ_DISPLACEMENT(CHAR, NUMBER, DISP)
+
+USE SOLUTION_DATA, ONLY: INT_KIND, REAL_KIND, LINE_KIND, WORD_KIND, BOUNDARY, NUM_NODE, GET_MACRO, REMOVE_FIRSTWORD, &
+                         ERROR, BND_NODE, NODE_DISP_DOF
+
+IMPLICIT NONE
+
+CHARACTER(*), INTENT(IN)::      CHAR          ! THE TYPE OF DISPLACEMENTS
+INTEGER(INT_KIND), INTENT(IN):: NUMBER        ! THE NUMBER OF DISPLACEMENTS
+TYPE(BND_NODE), INTENT(OUT)::   DISP(NUMBER)  ! STORE THE READ RESULT
+CHARACTER(LINE_KIND)            COMMAND
+CHARACTER(WORD_KIND)            ITEM          ! A TEMPERARY VARIABLE TO STORE STRINGS
+INTEGER(INT_KIND)               FIRST
+INTEGER(INT_KIND)               LAST
+INTEGER(INT_KIND)               I             ! LOOP INDEX
+INTEGER(INT_KIND)               J             ! LOOP INDEX
+INTEGER(INT_KIND)               K             ! LOOP INDEX
+INTEGER(INT_KIND)               SUM           ! THE TOTAL NUMBER OF DISPLACEMENT BOUNDARY CONDITION
+INTEGER(INT_KIND)               ERR           ! ERR INDEX
+REAL(REAL_KIND)                 VALUE         ! THE VALUE OF BOUNDARY DISPLACEMENTS
+         
+!-- READ DISPLACEMENT BOUNDARY CONDITION
+SUM     = 0
+COMMAND = GET_MACRO(BOUNDARY)
+DO WHILE(TRIM(COMMAND) .NE. 'END ' // CHAR)     
+   IF(INDEX(COMMAND, 'TO') .NE. 0) THEN
+      READ(COMMAND,*) FIRST, ITEM, LAST
+      IF(LAST .LT. FIRST) CALL ERROR('Last node No. < first node No. ! (' // CHAR //')')
+      COMMAND = REMOVE_FIRSTWORD(COMMAND)
+      COMMAND = REMOVE_FIRSTWORD(COMMAND)
+   ELSE
+      READ(COMMAND,*) FIRST
+      LAST    = FIRST
+   ENDIF
+   IF(FIRST .LE. 0 .OR. LAST .GT. NUM_NODE) CALL ERROR('Invalid node in ' // TRIM(CHAR) // '! (' // TRIM(COMMAND) // ' )')
+   COMMAND = REMOVE_FIRSTWORD(COMMAND)
+            
+   K   = SUM + 1
+   SUM = SUM + LAST - FIRST + 1       
+   DO WHILE(LEN_TRIM(COMMAND) .GT. 0)
+      READ(COMMAND,*) ITEM, VALUE
+               
+      SELECT CASE(TRIM(ITEM))
+         CASE ('U')
+            J = 1
+         CASE ('V')
+            J = 2
+         CASE ('W')
+            J = 3
+         CASE ('ROTX')
+            J = 4
+         CASE ('ROTY')
+            J = 5
+         CASE ('ROTZ')
+            J = 6
+         CASE DEFAULT
+            CALL ERROR("Invalid displacement type '" // TRIM(ITEM) // "'!")
+      END SELECT
+               
+      DO I = K, SUM
+         IF(.NOT. ALLOCATED(DISP(I)%GIVEN)) THEN
+            DISP(I)%NODE = FIRST + I - K
+            ALLOCATE(DISP(I)%GIVEN(NODE_DISP_DOF(FIRST + I - K)%NUM_DOF), STAT = ERR)
+            IF(ERR .NE. 0) CALL ERROR('Fail to allocate ' // CHAR // '%GIVEN!')
+            DISP(I)%GIVEN = .FALSE.
+            ALLOCATE(DISP(I)%VALUE(NODE_DISP_DOF(FIRST + I - K)%NUM_DOF), STAT = ERR)
+            IF(ERR .NE. 0) CALL ERROR('Fail to allocate ' // CHAR // '%VALUE!')
+         ENDIF
+         DISP(I)%GIVEN(J) = .TRUE.
+         DISP(I)%VALUE(J) = VALUE
+      ENDDO
+               
+      COMMAND = REMOVE_FIRSTWORD(COMMAND)
+      COMMAND = REMOVE_FIRSTWORD(COMMAND)
+   ENDDO
+   
+   COMMAND = GET_MACRO(BOUNDARY)
+ENDDO
+
+IF(SUM .NE. NUMBER) CALL ERROR('NUM_' // CHAR // ' is incorrect!')
+
+END

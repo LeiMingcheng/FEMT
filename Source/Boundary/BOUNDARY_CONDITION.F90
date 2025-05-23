@@ -1,0 +1,56 @@
+!***************************************************************************************************
+!- PURPORSE:
+!     ENTRY POINT OF READING BOUNDARY CONDITION.
+!  
+!- INPUT ARGUMENTS:
+!  NONE
+!
+!- OUTPUT ARGUMENTS:
+!  NONE
+!
+!- CALL PROCEDURES:
+!  MODULE PROCEDURE:   GET_MACRO, ERROR
+!  EXTERNAL PROCEDURE: BOUNDARY_FORCE, BOUNDARY_DISPLACEMENT
+!
+!- CALLED BY
+!  SOLVER_MANAGER
+!
+!- PROGAMMED BY:
+!  ZHIHAI XIANG, DEPARTMENT OF ENGINEERING MECHANICS, TSINGHUA UNIVERSITY, JANUARY 17, 2016
+!***************************************************************************************************
+
+SUBROUTINE BOUNDARY_CONDITION
+
+USE BASIC_DATA, ONLY: LINE_KIND, LG_KIND, BOUNDARY, GET_MACRO, ERROR
+
+IMPLICIT NONE
+
+CHARACTER(LINE_KIND) COMMAND
+LOGICAL(LG_KIND)     EX         ! EXIT MARK
+
+!-- READ FROM BOUNDARY CONDITION FILE (*.BND)
+COMMAND = GET_MACRO(BOUNDARY)
+IF(COMMAND(1:4) .EQ. 'STEP') THEN
+   EX = .FALSE.
+   DO WHILE(.NOT. EX)
+      COMMAND = GET_MACRO(BOUNDARY)
+ 
+      SELECT CASE(TRIM(COMMAND))
+         CASE ('FORCE') 
+            CALL BOUNDARY_FORCE
+            
+         CASE ('DISPLACEMENT')
+            CALL BOUNDARY_DISPLACEMENT
+                    
+         CASE ('END STEP')
+            EX = .TRUE.
+         
+      CASE DEFAULT
+         CALL ERROR('Invalid boundary type: ' // TRIM(COMMAND))
+      END SELECT
+   ENDDO
+ELSE
+   CALL ERROR('STEP block is missing!')
+ENDIF
+
+END SUBROUTINE BOUNDARY_CONDITION

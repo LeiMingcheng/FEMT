@@ -1,0 +1,48 @@
+!***************************************************************************************************
+!- PURPORSE:
+!     READ NODE COORDINATES FROM INPUT FILE.
+!  
+!- INPUT ARGUMENTS:
+!  NONE
+!
+!- OUTPUT ARGUMENTS:
+!  NONE
+!
+!- CALL PROCEDURES:
+!  MODULE PROCEDURE: GET_MACRO, ERROR
+!
+!- CALLED BY:
+!  INITIATE
+!
+!- PROGAMMED BY:
+!  ZHIHAI XIANG, DEPARTMENT OF ENGINEERING MECHANICS, TSINGHUA UNIVERSITY, JULY 7, 2007
+!***************************************************************************************************
+
+SUBROUTINE READ_XYZ
+
+USE BASIC_DATA, ONLY: INT_KIND, LINE_KIND, CONTROL, NUM_NODE, XYZ, GET_MACRO, ERROR
+
+IMPLICIT NONE
+
+CHARACTER(LINE_KIND) COMMAND
+INTEGER(INT_KIND)    ERR      ! ERR INDEX
+INTEGER(INT_KIND)    I        ! LOOP INDEX
+INTEGER(INT_KIND)    J        ! LOOP INDEX
+INTEGER(INT_KIND)    NO       ! NODE NUMBER
+
+!-- ALLOCATE COORDINATES FOR EACH NODE --
+IF(NUM_NODE .LE. 0) CALL ERROR('NUM_NODE should be greater than 0!')
+ALLOCATE(XYZ(3, NUM_NODE), STAT = ERR)
+IF(ERR .NE. 0) CALL ERROR('Fail to allocate XYZ!')
+                 
+!-- READ NODE COORDINATES --
+DO I = 1, NUM_NODE
+   COMMAND = GET_MACRO(CONTROL)
+   IF(ICHAR(COMMAND(1:1)) .LT. 49 .OR. ICHAR(COMMAND(1:1)) .GT. 57) THEN
+      CALL ERROR('Invalid node number: ' // COMMAND(1:INDEX(COMMAND,' ') - 1))
+   ELSE   
+      READ(COMMAND,*) NO, (XYZ(J,NO), J = 1, 3)
+   ENDIF
+ENDDO
+
+END SUBROUTINE READ_XYZ

@@ -1,0 +1,92 @@
+!***************************************************************************************************
+!- PURPORSE:
+!     READ MATERIAL INFORMATION FROM INPUT FILE.
+!  
+!- INPUT ARGUMENTS:
+!  NONE
+!
+!- OUTPUT ARGUMENTS:
+!  NONE
+!
+!- CALL PROCEDURES:
+!  MODULE PROCEDURE: GET_MACRO, ERROR, NUM2STR, REMOVE_FIRSTWORD
+!
+!- CALLED BY:
+!  INITIATE
+!
+!- PROGAMMED BY:
+!  ZHIHAI XIANG, DEPARTMENT OF ENGINEERING MECHANICS, TSINGHUA UNIVERSITY, NOVEMBER 1, 2015
+!***************************************************************************************************
+
+SUBROUTINE READ_MATERIALS
+
+USE SOLUTION_DATA, ONLY: INT_KIND, REAL_KIND, WORD_KIND, LINE_KIND, CONTROL, NUM_MATERIAL, MATERIALS, &
+                         NUM2STR, GET_MACRO, ERROR, REMOVE_FIRSTWORD
+
+IMPLICIT NONE
+
+CHARACTER(LINE_KIND) COMMAND
+CHARACTER(LINE_KIND) STRING           ! SOME KEYWORDS OR NUMBERS IN MACRO
+CHARACTER(WORD_KIND) MATERIAL_TYPE
+INTEGER(INT_KIND)    ERR              ! ERR INDEX
+INTEGER(INT_KIND)    NO               ! NODE OR ELEMENT NUMBER
+REAL(REAL_KIND)      VALUE
+
+!-- ALLOCATE MATERIALS --
+IF(NUM_MATERIAL .LE. 0) CALL ERROR('NUM_MATERIAL should be greater than 0!')
+ALLOCATE(MATERIALS(NUM_MATERIAL), STAT = ERR)
+IF(ERR .NE. 0) CALL ERROR('Fail to allocate MATERIALS!')
+
+!-- READ PROPERTIES FOR EACH MATERIAL --
+COMMAND = GET_MACRO(CONTROL)
+DO WHILE(TRIM(COMMAND) .NE. 'END MATERIALS')
+   ! READ THE MATERIAL NUMBER AND TYPE
+   IF(INDEX(COMMAND, 'MATERIAL') .EQ. 1) THEN         
+      READ(COMMAND(9:),*) NO, STRING, MATERIAL_TYPE
+      IF(NO .LT. 1 .OR. NO .GT. NUM_MATERIAL) CALL ERROR('Invalid material No. : ' // NUM2STR(NO))
+      
+      MATERIALS(NO)%MATERIAL_TYPE = TRIM(MATERIAL_TYPE)
+   ELSE
+      CALL ERROR('Missing material type')
+   ENDIF
+    
+   ! READ MATERIAL PROPERTIES
+   COMMAND = GET_MACRO(CONTROL)   
+   DO WHILE(TRIM(COMMAND) .NE. 'END MATERIAL') 
+      ! TEMPORARILY SAVE THIS MATERIAL PROPERTY
+      READ(COMMAND,*) STRING, VALUE
+      COMMAND = REMOVE_FIRSTWORD(COMMAND)    ! REMOVE TYPE
+      COMMAND = REMOVE_FIRSTWORD(COMMAND)    ! REMOVE VALUE                  
+        
+      ! STORE THIS PROPERTY ACCORDING TO MATERIAL TYPE
+      SELECT CASE(TRIM(MATERIAL_TYPE))
+         CASE ('ISOTROPIC')
+            SELECT CASE(TRIM(STRING))
+               CASE ('E')
+                  MATERIALS(NO)%E = VALUE
+                  IF(VALUE .LT. 0.0) CALL ERROR("Young's modulus is negative!")
+               
+               CASE ('V')
+                  MATERIALS(NO)%V = VALUE
+                  IF(VALUE .LT. -1.0 .OR. VALUE .GT. 0.5) CALL ERROR("Poisson's ratio is out of [-1, 0.5]!")                  
+                  
+               CASE DEFAULT
+                  CALL ERROR("Invalid material property '" // TRIM(STRING) // " '!")
+                  
+            ENDSELECT
+               
+         CASE ('ANISOTROPIC')
+               
+         CASE DEFAULT
+            CALL ERROR("Invalid material type '" // TRIM(MATERIAL_TYPE) // " '!")               
+        
+      ENDSELECT
+   
+      COMMAND = GET_MACRO(CONTROL)
+    ENDDO
+    
+    COMMAND = GET_MACRO(CONTROL)
+ENDDO
+
+END SUBROUTINE READ_MATERIALS
+
